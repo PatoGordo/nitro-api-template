@@ -1,5 +1,5 @@
-import { hashSync, compareSync } from "bcryptjs";
-import { JwtPayload, verify, sign } from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { User } from "../../../domain/entities/User";
 import { inMemoryDB } from "../../../database/in-memory-db";
 import { IAuthRepository } from "../../interfaces/interface-auth.repository";
@@ -19,11 +19,11 @@ export class InMemoryAuthRepository implements IAuthRepository {
       throw new Error("Email or password went wrong!");
     }
 
-    if (!compareSync(password, user.password)) {
+    if (!bcrypt.compareSync(password, user.password)) {
       throw new Error("Email or password went wrong!");
     }
 
-    const token = sign(
+    const token = jwt.sign(
       { ...user, password: "protected-data" },
       process.env.JWT_SECRET as string,
       {
@@ -59,7 +59,7 @@ export class InMemoryAuthRepository implements IAuthRepository {
 
     inMemoryDB.users.push(newUser);
 
-    const token = sign(
+    const token = jwt.sign(
       { ...newUser, password: "protected-data" },
       process.env.JWT_SECRET as string,
       {
@@ -83,7 +83,7 @@ export class InMemoryAuthRepository implements IAuthRepository {
       );
     }
 
-    const recoverToken = sign(
+    const recoverToken = jwt.sign(
       {
         email: user.email,
         passwordHash: user.password,
@@ -106,7 +106,7 @@ export class InMemoryAuthRepository implements IAuthRepository {
     token: string;
     password: string;
   }): Promise<void> {
-    const tokenData = verify(
+    const tokenData = jwt.verify(
       token,
       process.env.JWT_SECRET as string
     ) as JwtPayload;
@@ -131,6 +131,6 @@ export class InMemoryAuthRepository implements IAuthRepository {
       throw new Error("This link probably has been expired or not exists");
     }
 
-    inMemoryDB.users[userIndex].password = hashSync(password);
+    inMemoryDB.users[userIndex].password = bcrypt.hashSync(password);
   }
 }

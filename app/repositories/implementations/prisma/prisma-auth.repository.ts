@@ -1,5 +1,5 @@
-import { hashSync, compareSync } from "bcryptjs";
-import { JwtPayload, sign, verify } from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { IAuthRepository } from "../../../repositories/interfaces/interface-auth.repository";
 import { User } from "../../../../app/domain/entities/User";
 import { prismaClient } from "../../../database/db-client";
@@ -26,13 +26,13 @@ export class PrismaAuthRepository implements IAuthRepository {
       throw new Error($st("auth.email_or_password_went_wrong"));
     }
 
-    const checkPassword = compareSync(password, user.password);
+    const checkPassword = bcrypt.compareSync(password, user.password);
 
     if (!checkPassword) {
       throw new Error($st("auth.email_or_password_went_wrong"));
     }
 
-    const token = sign(
+    const token = jwt.sign(
       { ...user, password: "protected-data" },
       process.env.JWT_SECRET as string,
       {
@@ -66,11 +66,11 @@ export class PrismaAuthRepository implements IAuthRepository {
       data: {
         email,
         name,
-        password: hashSync(password),
+        password: bcrypt.hashSync(password),
       },
     });
 
-    const token = sign(
+    const token = jwt.sign(
       { ...user, password: "protected-data" },
       process.env.JWT_SECRET as string,
       {
@@ -96,7 +96,7 @@ export class PrismaAuthRepository implements IAuthRepository {
       throw new Error($st("auth.this_user_does_not_exists"));
     }
 
-    const recoverToken = sign(
+    const recoverToken = jwt.sign(
       {
         email: user.email,
         passwordHash: user.password,
@@ -133,7 +133,7 @@ export class PrismaAuthRepository implements IAuthRepository {
     token: string;
     password: string;
   }): Promise<void> {
-    const tokenData = verify(
+    const tokenData = jwt.verify(
       token,
       process.env.JWT_SECRET as string
     ) as JwtPayload;
@@ -167,7 +167,7 @@ export class PrismaAuthRepository implements IAuthRepository {
         id: user.id,
       },
       data: {
-        password: hashSync(password, 8),
+        password: bcrypt.hashSync(password, 8),
       },
     });
   }

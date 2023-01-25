@@ -1,4 +1,4 @@
-import { compareSync } from "bcryptjs";
+import bcrypt from "bcryptjs";
 import { User } from "../../../domain/entities/User";
 import { InMemoryAuthRepository } from "../../../repositories/implementations/in-memory/in-memory.repository";
 import { inMemoryDB } from "../../../database/in-memory-db";
@@ -27,9 +27,11 @@ describe("Testing the Reset Password Use Case", () => {
     });
 
     expect(userData.password === inMemoryDB.users[0].password).toBeFalsy();
-    expect(compareSync("12345678", inMemoryDB.users[0].password)).toBeFalsy();
     expect(
-      compareSync("1234567890", inMemoryDB.users[0].password)
+      bcrypt.compareSync("12345678", inMemoryDB.users[0].password)
+    ).toBeFalsy();
+    expect(
+      bcrypt.compareSync("1234567890", inMemoryDB.users[0].password)
     ).toBeTruthy();
   });
 });

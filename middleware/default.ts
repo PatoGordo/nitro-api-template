@@ -1,6 +1,6 @@
 import { RateLimiter } from "limiter";
 import { getRequestHeader } from "h3";
-import { get, put } from "memory-cache";
+import cache from "memory-cache";
 import { $st, setLang } from "../i18n/$st";
 
 export default defineEventHandler(async (event) => {
@@ -31,21 +31,21 @@ export default defineEventHandler(async (event) => {
   if (event.node.req.url?.includes("/api/")) {
     const ip = getRequestHeader(event, "x-forwarded-for");
 
-    if (!get(ip)) {
+    if (!cache.get(ip)) {
       const cachedLimiter = new RateLimiter({
         interval: 15000,
         tokensPerInterval: 9,
         fireImmediately: false,
       });
 
-      put(ip, cachedLimiter, 15000);
+      cache.put(ip, cachedLimiter, 15000);
     } else {
-      const cachedLimiter = get(ip) as RateLimiter;
+      const cachedLimiter = cache.get(ip) as RateLimiter;
 
       if (Math.floor(cachedLimiter.getTokensRemaining()) > 1) {
         await cachedLimiter.removeTokens(1);
 
-        put(ip, cachedLimiter, 15000);
+        cache.put(ip, cachedLimiter, 15000);
       } else {
         event.node.res.statusCode = 429;
 

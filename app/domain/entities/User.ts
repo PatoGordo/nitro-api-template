@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { hashSync } from "bcryptjs";
+import bcrypt from "bcryptjs";
 
 export class User {
   id?: string;
@@ -15,7 +15,7 @@ export class User {
     this.id = crypto.randomUUID();
     this.name = name;
     this.email = email;
-    this.password = hashSync(password);
+    this.password = bcrypt.hashSync(password);
     this.role = role !== undefined ? role : 3;
     this.status = status !== undefined ? status : 1;
     this.createdAt = new Date();

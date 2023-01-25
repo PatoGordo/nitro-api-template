@@ -24,5 +24,6 @@ module.exports = {
     "no-useless-constructor": "off",
     "no-useless-catch": "off",
     "no-useless-escape": "off",
+    "import/no-named-as-default-member": "off",
   },
 };

@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import { JwtPayload, verify } from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { H3Event } from "h3";
 import { $st } from "../../i18n/$st";
 import { prismaClient } from "../database/db-client";
@@ -54,7 +54,7 @@ export async function ensureAuthenticated(
     };
   }
 
-  const isSignedIn = verify(token, process.env.JWT_SECRET as string);
+  const isSignedIn = jwt.verify(token, process.env.JWT_SECRET as string);
 
   if (!isSignedIn) {
     event.node.res.statusCode = 403;

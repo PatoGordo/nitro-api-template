@@ -6,16 +6,16 @@ name: App CI - Continuous Integration
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   run-tests-and-build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         node-version: [14.x, 16.x]
@@ -32,9 +32,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: echo "Installing all dependencies"
       - run: yarn install
+      - run: echo "Testing compiling"
+      - run: yarn build
       - run: echo "Applying the codestyle"
       - run: yarn lint-staged
       - run: echo "Testing all usecases"
       - run: yarn test
-      - run: echo "Testing compiling"
-      - run: yarn build

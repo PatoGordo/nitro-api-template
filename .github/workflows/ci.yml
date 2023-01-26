@@ -32,7 +32,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: echo "Installing all dependencies"
       - run: yarn install
-      - run: echo "Testing compiling"
+      - run: echo "Copying the .env.example into .env"
+      - run: cp .env.example .env
+      - run: echo "Trying to compiling"
       - run: yarn build
       - run: echo "Applying the codestyle"
       - run: yarn lint-staged

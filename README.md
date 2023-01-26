@@ -1,3 +1,1 @@
 # nitro-api-template
-
-- PatoGordo

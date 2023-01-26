@@ -4,6 +4,7 @@ import cache from "memory-cache";
 import { $st, setLang } from "../i18n/$st";
 
 export default defineEventHandler(async (event) => {
+  // i18n middleware
   await new Promise((resolve) => {
     const query = getQuery(event);
 
@@ -14,6 +15,7 @@ export default defineEventHandler(async (event) => {
     resolve(0);
   });
 
+  // CORS middleware
   setResponseHeaders(event, {
     "Access-Control-Allow-Methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     "Access-Control-Allow-Origin": "*",
@@ -28,6 +30,7 @@ export default defineEventHandler(async (event) => {
     return "OK";
   }
 
+  // Rate limiter middleware
   if (event.node.req.url?.includes("/api/")) {
     const ip = getRequestHeader(event, "x-forwarded-for");
 

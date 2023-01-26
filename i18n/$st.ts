@@ -4,7 +4,7 @@ let lang: null | string = null;
 const fallbackLang = "en";
 
 export const setLang = (_lang: string) => {
-  if (Object.keys(locales).includes(_lang) && lang) {
+  if (Object.keys(locales).includes(_lang) && !lang) {
     lang = _lang;
     return;
   }

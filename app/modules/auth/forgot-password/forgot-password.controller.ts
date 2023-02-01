@@ -1,9 +1,9 @@
 import { H3Event } from "h3";
-import * as st from "simple-runtypes";
 import { AppResult } from "../../../domain/types/app-result";
-import { EMAIL_REGEX_MATCH } from "../../../utils/regexes";
 import { $st } from "../../../../i18n/$st";
 import { ForgotPasswordUseCase } from "./forgot-password.usecase";
+import { handleError } from "../../../domain/handlers/handle-error";
+import { z } from "zod";
 
 export class ForgotPasswordController {
   constructor(private useCase: ForgotPasswordUseCase) {}
@@ -24,23 +24,17 @@ export class ForgotPasswordController {
         },
       };
     } catch (error) {
-      event.node.res.statusCode = 400;
-
-      return {
-        message: (error as AppResult).message,
-      };
+      return handleError(event, error);
     }
   }
 
   private async validations(request: unknown) {
-    const validation = st.record({
-      email: st.string({ match: EMAIL_REGEX_MATCH, trim: true }),
-    });
+    const validation = z
+      .object({
+        email: z.string().email(),
+      })
+      .strict();
 
-    const result = st.use(validation, request);
-
-    if (result.ok === false) {
-      throw new Error(st.getFormattedError(result.error));
-    }
+    validation.parse(request);
   }
 }

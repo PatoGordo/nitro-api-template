@@ -4,7 +4,7 @@ let lang: null | string = null;
 const fallbackLang = "en";
 
 export const setLang = (_lang: string) => {
-  if (Object.keys(locales).includes(_lang) && !lang) {
+  if ((Object.keys(locales).includes(_lang) && !lang) || lang !== _lang) {
     lang = _lang;
     return;
   }
@@ -27,6 +27,20 @@ export const $st = (string: string) => {
   } else {
     const res = getDescendantProp(locales[lang || fallbackLang], string);
     const fallbackRes = getDescendantProp(locales[fallbackLang], string);
+
+    return res || fallbackRes || string;
+  }
+};
+
+// $zt stands for $zodTranslation
+export const $zt = (string: string) => {
+  const tokenize = string.split(".");
+
+  if (!tokenize.length) {
+    return locales.zod[lang || fallbackLang];
+  } else {
+    const res = getDescendantProp(locales.zod[lang || fallbackLang], string);
+    const fallbackRes = getDescendantProp(locales.zod[fallbackLang], string);
 
     return res || fallbackRes || string;
   }

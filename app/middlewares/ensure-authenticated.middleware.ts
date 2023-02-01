@@ -18,55 +18,35 @@ export async function ensureAuthenticated(
 }> {
   const tokenHeader = event.node.req.headers.authorization;
 
-  const errorFunctions = {
-    isAdmin: () => false,
-    isAdminOrEditor: () => false,
-    isEditor: () => false,
-    isUser: () => false,
-    roleIn: () => false,
-  };
-
   if (!tokenHeader) {
-    event.node.res.statusCode = 403;
-
-    return {
-      error: {
-        message: $st(
-          "ensure-authenticated.you_must_to_be_loggedin_to_make_this_action"
-        ),
-      },
-      ...errorFunctions,
-    };
+    throw new Error(
+      $st("ensure-authenticated.you_must_to_be_loggedin_to_make_this_action"),
+      {
+        cause: 401,
+      }
+    );
   }
 
   const token = tokenHeader.split("Bearer ")[1];
 
   if (!token) {
-    event.node.res.statusCode = 403;
-
-    return {
-      error: {
-        message: $st(
-          "ensure-authenticated.you_must_to_be_loggedin_to_make_this_action"
-        ),
-      },
-      ...errorFunctions,
-    };
+    throw new Error(
+      $st("ensure-authenticated.you_must_to_be_loggedin_to_make_this_action"),
+      {
+        cause: 401,
+      }
+    );
   }
 
   const isSignedIn = jwt.verify(token, process.env.JWT_SECRET as string);
 
   if (!isSignedIn) {
-    event.node.res.statusCode = 403;
-
-    return {
-      error: {
-        message: $st(
-          "ensure-authenticated.you_must_to_be_loggedin_to_make_this_action"
-        ),
-      },
-      ...errorFunctions,
-    };
+    throw new Error(
+      $st("ensure-authenticated.you_must_to_be_loggedin_to_make_this_action"),
+      {
+        cause: 401,
+      }
+    );
   }
 
   const id = (isSignedIn as JwtPayload).id;
@@ -81,29 +61,21 @@ export async function ensureAuthenticated(
   });
 
   if (!user) {
-    event.node.res.statusCode = 403;
-
-    return {
-      error: {
-        message: $st(
-          "ensure-authenticated.probabily_your_user_has_been_deleted"
-        ),
-      },
-      ...errorFunctions,
-    };
+    throw new Error(
+      $st("ensure-authenticated.probabily_your_user_has_been_deleted"),
+      {
+        cause: 401,
+      }
+    );
   }
 
   if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
-    event.node.res.statusCode = 403;
-
-    return {
-      error: {
-        message: $st(
-          "ensure-authenticated.you_are_not_allowed_to_do_this_action"
-        ),
-      },
-      ...errorFunctions,
-    };
+    throw new Error(
+      $st("ensure-authenticated.you_are_not_allowed_to_do_this_actions"),
+      {
+        cause: 401,
+      }
+    );
   }
 
   function isAdminOrEditor() {

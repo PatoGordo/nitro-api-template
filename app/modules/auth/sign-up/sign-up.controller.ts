@@ -1,8 +1,8 @@
 import { H3Event } from "h3";
-import * as st from "simple-runtypes";
 import { AppResult } from "../../../domain/types/app-result";
-import { EMAIL_REGEX_MATCH } from "../../../utils/regexes";
+import { handleError } from "../../../domain/handlers/handle-error";
 import { SignUpUseCase } from "./sign-up.usecase";
+import { z } from "zod";
 
 export class SignUpController {
   constructor(private useCase: SignUpUseCase) {}
@@ -21,26 +21,19 @@ export class SignUpController {
         result,
       };
     } catch (error) {
-      event.node.res.statusCode = 400;
-
-      return error;
+      return handleError(event, error);
     }
   }
 
   private async validations(request: unknown) {
-    const validation = st.record({
-      name: st.string(),
-      email: st.string({
-        match: EMAIL_REGEX_MATCH,
-        trim: true,
-      }),
-      password: st.string({ minLength: 8, trim: true }),
-    });
+    const validation = z
+      .object({
+        email: z.string().email(),
+        password: z.string().min(8).max(64),
+        name: z.string(),
+      })
+      .strict();
 
-    const result = st.use(validation, request);
-
-    if (result.ok === false) {
-      throw new Error(st.getFormattedError(result.error));
-    }
+    validation.parse(request);
   }
 }

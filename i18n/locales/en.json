@@ -3,7 +3,9 @@
     "404": "404 - This page does not exists!"
   },
   "alerts": {
-    "too_many_requests": "Too many following requests. Calm down!"
+    "too_many_requests": "Too many following requests. Calm down!",
+    "error_in": "Error in",
+    "untracked_error": "Untracked error"
   },
   "ensure-authenticated": {
     "you_must_to_be_loggedin_to_make_this_action": "You must to be loggedin to make this action!",

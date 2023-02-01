@@ -3,7 +3,9 @@
     "404": "404 - Essa página não existe!"
   },
   "alerts": {
-    "too_many_requests": "Muitas requisições seguidas. Vai com calma!"
+    "too_many_requests": "Muitas requisições seguidas. Vai com calma!",
+    "error_in": "Erro em",
+    "untracked_error": "Erro inesperado"
   },
   "ensure-authenticated": {
     "you_must_to_be_loggedin_to_make_this_action": "Você deve estar logado para realizar essa ação!",

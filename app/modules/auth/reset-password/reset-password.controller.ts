@@ -1,8 +1,9 @@
 import { H3Event } from "h3";
-import * as st from "simple-runtypes";
 import { AppResult } from "../../../domain/types/app-result";
 import { $st } from "../../../../i18n/$st";
+import { z } from "zod";
 import { ResetPasswordUseCase } from "./reset-password.usecase";
+import { handleError } from "../../../domain/handlers/handle-error";
 
 export class ResetPasswordController {
   constructor(private useCase: ResetPasswordUseCase) {}
@@ -25,24 +26,18 @@ export class ResetPasswordController {
         },
       };
     } catch (error) {
-      event.node.res.statusCode = 400;
-
-      return {
-        message: (error as AppResult).message,
-      };
+      return handleError(event, error);
     }
   }
 
   private async validations(request: unknown) {
-    const validation = st.record({
-      token: st.string({ trim: true }),
-      password: st.string({ minLength: 8, trim: true }),
-    });
+    const validation = z
+      .object({
+        token: z.string(),
+        password: z.string().min(8).max(64),
+      })
+      .strict();
 
-    const result = st.use(validation, request);
-
-    if (result.ok === false) {
-      throw new Error(st.getFormattedError(result.error));
-    }
+    validation.parse(request);
   }
 }

@@ -2,15 +2,12 @@ import { H3Event } from "h3";
 import { $st } from "../../../i18n/$st";
 import { AppResult } from "../../domain/types/app-result";
 import { ensureAuthenticated } from "../../middlewares/ensure-authenticated.middleware";
+import { handleError } from "../../domain/handlers/handle-error";
 
 export class ProtectedController {
   async execute(event: H3Event): Promise<AppResult> {
     try {
-      const { error } = await ensureAuthenticated(event, [1, 2]);
-
-      if (error) {
-        throw error;
-      }
+      await ensureAuthenticated(event, [1, 2]);
 
       return {
         result: {
@@ -18,11 +15,7 @@ export class ProtectedController {
         },
       };
     } catch (error) {
-      event.node.res.statusCode = 400;
-
-      return {
-        message: (error as AppResult).message,
-      };
+      return handleError(event, error);
     }
   }
 }

@@ -1,7 +1,9 @@
 import { RateLimiter } from "limiter";
 import { getRequestHeader } from "h3";
 import cache from "memory-cache";
-import { $st, setLang } from "../i18n/$st";
+import { z } from "zod";
+import { makeZodI18nMap } from "zod-i18n-map";
+import { $st, $zt, setLang } from "../i18n/$st";
 
 export default defineEventHandler(async (event) => {
   // i18n middleware
@@ -11,6 +13,9 @@ export default defineEventHandler(async (event) => {
     const lang = String(query?.lang) || "en";
 
     setLang(lang);
+
+    // apply i18n into zod
+    z.setErrorMap(makeZodI18nMap({ t: $zt }));
 
     resolve(0);
   });

@@ -5611,3 +5611,8 @@ zod-i18n-map@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/zod-i18n-map/-/zod-i18n-map-2.2.1.tgz#3cef1f780b15200cb78241d507e33362cced3917"
   integrity sha512-i7Ow35f1iO8b9TACVI3mayFWxor3kR3P5zmjCLTylIsRymAi1AqD4Wh5/wqfcKh0F4CIHuz+hF+bW4HVLr02rw==
+
+zod@^3.20.2:
+  version "3.20.2"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.20.2.tgz#068606642c8f51b3333981f91c0a8ab37dfc2807"
+  integrity sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==

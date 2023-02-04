@@ -29,5 +29,16 @@
   },
   "protected": {
     "this_is_a_protected_data_from_the_server": "This is a protected data from the server!"
+  },
+  "email": {
+    "reset-password": {
+      "hey_we_received_a_request_to_reset_your_password": "Hey, we received a request to reset your password.",
+      "forgot_your_password": "Forgot your password?",
+      "lets_get_you_a_new_one": "Let&#8217;s get you a new one!",
+      "reset_my_password": "Reset My Password",
+      "having_trouble": "Having trouble?",
+      "didnt_request_a_password_reset": "Didn&#8217;t request a password reset?",
+      "you_can_ignore_this_message": "You can ignore this message."
+    }
   }
 }

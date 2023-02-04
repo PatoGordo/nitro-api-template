@@ -6,6 +6,7 @@ import { prismaClient } from "../../../database/db-client";
 import { transporter } from "../../../../app/services/mail";
 import { $st } from "../../../../i18n/$st";
 import "dotenv/config";
+import { resetEmailTemplate } from "../../../utils/mail/reset-password-generator";
 
 export class PrismaAuthRepository implements IAuthRepository {
   public async signIn({
@@ -107,18 +108,16 @@ export class PrismaAuthRepository implements IAuthRepository {
       }
     );
 
+    const emailTemplate = resetEmailTemplate(
+      recoverToken,
+      process.env.RESET_PASSWORD_URL
+    );
+
     await transporter.sendMail({
       to: email,
       from: process.env.MAIL_USERNAME,
       subject: `${process.env.APP_NAME} - ${$st("auth.reset_password")}`,
-      html: `
-      <h2>${$st("auth.click_in_the_link_below")}</h2>
-      <p>${$st("auth.the_link_below_expires_in_one_hour")}</p>
-      <br />
-      <a href="${process.env.RESET_PASSWORD_URL}${recoverToken}&app-name=${
-        process.env.APP_NAME
-      }&app-url=${process.env.APP_URL}">${$st("auth.reset_password")}</a>
-    `.trim(),
+      html: emailTemplate,
     });
 
     return {

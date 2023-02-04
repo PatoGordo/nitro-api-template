@@ -105,7 +105,7 @@ export function resetEmailTemplate(
 <td class="pad" style="width:100%;padding-right:0px;padding-left:0px;">
 <div align="left" class="alignment" style="line-height:10px"><img src="${
     process.env.APP_URL
-  }/images/Email_signature_1.png" style="display: block; height: auto; border: 0; width: 174px; max-width: 100%;" width="174"/></div>
+  }/images/email-signature.png" style="display: block; height: auto; border: 0; width: 174px; max-width: 100%;" width="174"/></div>
 </td>
 </tr>
 </table>
@@ -174,16 +174,16 @@ export function resetEmailTemplate(
 <tr>
 <td style="vertical-align: middle; text-align: center; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px;"><a href="https://github.com/patogordo" style="text-decoration: none;" target="_blank"><img align="center" alt="" class="icon" height="32" src="${
     process.env.APP_URL
-  }/images/logo-github.svg" style="display: block; height: auto; margin: 0 auto; border: 0;" width="32"/></a></td>
+  }/images/logo-github.png" style="display: block; height: auto; margin: 0 auto; border: 0;" width="32"/></a></td>
 <td style="vertical-align: middle; text-align: center; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px;"><a href="https://www.linkedin.com/in/icaro-miguel-0879521bb/" style="text-decoration: none;" target="_blank"><img align="center" alt="" class="icon" height="32" src="${
     process.env.APP_URL
-  }/images/logo-linkedin.svg" style="display: block; height: auto; margin: 0 auto; border: 0;" width="32"/></a></td>
+  }/images/logo-linkedin.png" style="display: block; height: auto; margin: 0 auto; border: 0;" width="32"/></a></td>
 <td style="vertical-align: middle; text-align: center; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px;"><a href="https://t.me/patogordo" style="text-decoration: none;" target="_blank"><img align="center" alt="" class="icon" height="32" src="${
     process.env.APP_URL
-  }/images/send-alt-filled.svg" style="display: block; height: auto; margin: 0 auto; border: 0;" width="32"/></a></td>
+  }/images/send-alt-filled.png" style="display: block; height: auto; margin: 0 auto; border: 0;" width="32"/></a></td>
 <td style="vertical-align: middle; text-align: center; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px;"><a href="mailto:support@patogordo.dev" style="text-decoration: none;" target="_self"><img align="center" alt="" class="icon" height="32" src="${
     process.env.APP_URL
-  }/images/email.svg" style="display: block; height: auto; margin: 0 auto; border: 0;" width="32"/></a></td>
+  }/images/email.png" style="display: block; height: auto; margin: 0 auto; border: 0;" width="32"/></a></td>
 </tr>
 </table>
 </td>
